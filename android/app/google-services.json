@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "468586609590",
+    "firebase_url": "https://pidgeonapp-5074a-default-rtdb.firebaseio.com",
+    "project_id": "pidgeonapp-5074a",
+    "storage_bucket": "pidgeonapp-5074a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468586609590:android:9ffcc9f7da3bacb0d55f17",
+        "android_client_info": {
+          "package_name": "com.example.pidgeon_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "468586609590-ieiok1iherlgsui6a702a5sbam5kjjbt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMdzAF9MADIcJcdXrEmDyDGgrXUNMUygM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "468586609590-ieiok1iherlgsui6a702a5sbam5kjjbt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
