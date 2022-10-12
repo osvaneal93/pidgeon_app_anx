@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pidgeon_app/src/ui/tools/colors_palette.dart';
+import 'package:pidgeon_app/src/core/utils/tools.dart';
 
 class LessonTotem extends StatelessWidget {
-   final int index;
-   final String lesson;
+  final int index;
+  final String lesson;
   const LessonTotem({super.key, required this.index, required this.lesson});
- 
 
   @override
   Widget build(BuildContext context) {
-    
     final screenSize = MediaQuery.of(context).size;
     return Column(
       children: [
@@ -23,15 +21,12 @@ class LessonTotem extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xffefeeee),
             borderRadius: BorderRadius.circular(22),
-            gradient:  LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-              ColorList().colorList[index],
-              ColorList().colorList[index]
-              ],
+              colors: [colorListIndex[index], colorListIndex[index]],
             ),
-            boxShadow:const [
+            boxShadow: const [
               BoxShadow(
                 color: Color(0xffffffff),
                 offset: Offset(
@@ -52,13 +47,16 @@ class LessonTotem extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-               Text(
+              Text(
                 lesson,
                 style: TextStyle(fontSize: 24),
               ),
               const Text('Como te sientes hoy?'),
-              Icon(FontAwesomeIcons.bookOpen, size: 80, color: Color(0xff4263BF),),
-              
+              Icon(
+                FontAwesomeIcons.bookOpen,
+                size: 80,
+                color: Color(0xff4263BF),
+              ),
             ],
           ),
         ),

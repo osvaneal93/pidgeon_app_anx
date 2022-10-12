@@ -1,26 +1,27 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:pidgeon_app/src/ui/views/principal/home.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pidgeon_app/app.dart';
+import 'package:pidgeon_app/src/data/repositories/auth_repository.dart';
+import 'package:pidgeon_app/src/ui/bloc/app/app_bloc.dart';
+import 'package:pidgeon_app/src/ui/cubit/login/login_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Home(),
-    );
-  }
+  runApp(RepositoryProvider(
+    create: (context) => AuthRepository(),
+    child: MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              AppBloc(authRepository: context.read<AuthRepository>()),
+        ),
+        BlocProvider(
+          create: (context) => LoginCubit(context.read<AuthRepository>()),
+        ),
+      ],
+      child: MyApp.create(),
+    ),
+  ));
 }

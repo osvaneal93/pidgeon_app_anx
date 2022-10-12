@@ -1,92 +1,98 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pidgeon_app/src/core/utils/colors.dart';
+import 'package:pidgeon_app/src/core/utils/constants.dart';
+import 'package:pidgeon_app/src/core/utils/styles.dart';
 import 'package:pidgeon_app/src/data/models/lesson_model.dart';
-import 'package:pidgeon_app/src/data/repositories/lesson/repo_lesson.dart';
-import 'package:pidgeon_app/src/ui/widgets/lesson_totem.dart';
-import 'package:pidgeon_app/src/ui/widgets/user_stats.dart';
+import 'package:pidgeon_app/src/ui/widgets/shared/text_divider.dart';
 
-class Lessons {
-  
-  NestedScrollView customNestedScrollView(Size screenSize) {
-    return NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              expandedHeight: screenSize.height * .4,
-              flexibleSpace: FlexibleSpaceBar(
-                title: const Text(
-                  'Lecciones',
-                  style: TextStyle(color: Color(0xff0A379A)),
-                ),
-                background: headHome(screenSize),
-              ),
-              backgroundColor: const Color(0xffefeeee),
-              pinned: true,
-            )
-          ];
-        },
-        body: lessonList());
-  }
+class LessonsView extends StatelessWidget {
+  const LessonsView({super.key});
 
-  lessonList() {
-    RepoLesson repoLesson = RepoLesson();
-    return SingleChildScrollView(
+  @override
+  Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    return SafeArea(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          StreamBuilder<List<LessonModel>>(
-              stream: repoLesson.getAllLessons(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const CircularProgressIndicator();
-                }
-                final lecciones = snapshot.data;
-                return SizedBox(
-                  height: 350,
-                  width: double.infinity,
-                  child: Swiper(
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                          child: LessonTotem(
-                        index: index + 1,
-                        lesson: lecciones![index].title!,
-                      ));
-                    },
-                    itemCount: lecciones!.length,
-                    viewportFraction: 0.50,
-                    scale: 0.7,
-                  ),
-                );
-              }),
+          TextDividerLarge(label: 'Elige tu lección'),
+          Expanded(
+              child: GridView.builder(
+            itemCount: lessonMocking.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+            ),
+            itemBuilder: (context, index) => LessonItem(
+              screenSize: screenSize,
+              index: index,
+              lessonModel: lessonMocking[index],
+              onTap: () {
+                Navigator.of(context).pushNamed('/lessons');
+              },
+            ),
+          ))
         ],
       ),
     );
   }
+}
 
-  headHome(Size screenSize) {
-    return Container(
-        child: Stack(
-      fit: StackFit.expand,
-      children: [
-        Image.asset(
-          'assets/backgroundAppbar.png',
-          fit: BoxFit.cover,
+class LessonItem extends StatelessWidget {
+  const LessonItem({
+    Key? key,
+    required this.screenSize,
+    required this.index,
+    required this.lessonModel,
+    this.onTap,
+  }) : super(key: key);
+
+  final Size screenSize;
+  final int index;
+  final LessonModel lessonModel;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: screenSize.height * .13,
+              width: screenSize.height * .13,
+              decoration: BoxDecoration(
+                color: colors.primaryRose,
+                gradient: LinearGradient(colors: [
+                  itemsFade[index][0],
+                  itemsFade[index][1],
+                ]),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: SvgPicture.asset(
+                  iconItemList[index],
+                  color: Colors.white,
+                  height: screenSize.height * .05,
+                  width: screenSize.height * .05,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              lessonModel.title!,
+              style: styles.mediumStyle(context,
+                  color: colors.onPrimaryBlue, bold: true),
+            )
+          ],
         ),
-        Positioned(
-            top: screenSize.height * .08,
-            left: screenSize.width * .03,
-            child: Column(
-              children: [
-                const Text(
-                  'Bienvenido Osvaldo',
-                  style: const TextStyle(fontSize: 28, color: Colors.white),
-                ),
-                const Text(
-                  'Todo esta bien ...',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              ],
-            )),
-      ],
-    ));
+      ),
+    );
   }
 }
