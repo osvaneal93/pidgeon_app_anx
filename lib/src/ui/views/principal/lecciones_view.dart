@@ -28,7 +28,7 @@ class LessonsView extends StatelessWidget {
               index: index,
               lessonModel: lessonMocking[index],
               onTap: () {
-                Navigator.of(context).pushNamed('/lessons');
+                Navigator.of(context).pushNamed('/lessons', arguments: index);
               },
             ),
           ))

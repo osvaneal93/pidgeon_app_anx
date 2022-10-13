@@ -9,7 +9,7 @@ class RouteGenerator {
     switch (settings.name) {
       case '/home':
         return MaterialPageRoute(
-          builder: (context) => Home(),
+          builder: (context) => LessonIndex(),
         );
 
       case '/login':
